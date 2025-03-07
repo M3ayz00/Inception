@@ -4,7 +4,7 @@ services:
     container_name: nginx
     restart: always
     volumes:
-      - wordpress:/var/www/wordpress
+      - /home/m3ayz00/data/wordpress:/var/www/wordpress
     networks:
       - inception
     build:
@@ -20,7 +20,7 @@ services:
     container_name: mariadb
     restart: always
     volumes:
-      - mariadb:/var/lib/mysql
+      - /home/m3ayz00/data/mariadb:/var/lib/mysql
     networks:
       - inception
     build:
@@ -34,7 +34,7 @@ services:
     container_name: wordpress
     restart: always
     volumes:
-      - wordpress:/var/www/wordpress
+      - /home/m3ayz00/data/wordpress:/var/www/wordpress
     networks:
       - inception
     build: 
@@ -45,22 +45,6 @@ services:
       - mariadb
     expose:
       - "9000"
-
-
-volumes:
-  mariadb:
-    driver: local
-    driver_opts:
-      type: none
-      device: /home/m3ayz00/data/mariadb
-      o: bind
-  wordpress:
-    driver: local
-    driver_opts:
-      type: none
-      device: /home/m3ayz00/data/wordpress
-      o: bind
-
 
 networks:
   inception:

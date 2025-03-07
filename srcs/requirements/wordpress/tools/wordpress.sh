@@ -17,19 +17,22 @@ sed -i "s/define( 'DB_PASSWORD', 'password_here' );/define( 'DB_PASSWORD', '${MY
 sed -i "s/localhost/mariadb/" wp-config.php
 
 echo "Waiting for MariaDB to be ready..."
-until mysql -h mariadb -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" -e "SHOW DATABASES;" &>/dev/null; do
-    echo "MariaDB is not ready yet..."
-    sleep 2
+until wp db check --allow-root &>/dev/null; do
+  echo "MariaDB is not ready yet..."
+  sleep 2
 done
+
 
 wp core install \
   --url="${DOMAIN_NAME}" \
+  --title="${SITE_TITLE}" \
   --admin_user="${WP_ADMIN_USER}" \
   --admin_password="${WP_ADMIN_PASSWORD}" \
+  --admin_email="${WP_ADMIN_EMAIL}" \
   --allow-root
 
 wp user create \
-    "${WP_USER}" \
+    "${WP_USER}" "${WP_USER_EMAIL}" \
     --user_pass="${WP_USER_PASSWORD}" \
     --role=editor \
     --allow-root
