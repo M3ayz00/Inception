@@ -26,8 +26,8 @@ services:
       context: ./requirements/mariadb
     env_file:
       - .env
-    ports:
-      - "3306:3306"
+    expose:
+      - "3306"
 
   wordpress:
     container_name: wordpress
