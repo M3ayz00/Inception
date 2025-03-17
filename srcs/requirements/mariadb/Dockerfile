@@ -11,7 +11,8 @@ COPY tools/entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
 
-RUN mkdir -p /var/lib/mysql/ /var/run/mysqld/ && \
-    chown -R mysql:mysql /var/lib/mysql/ /var/run/mysqld/
+# RUN mkdir -p /run/mysqld/ && \
+#     chown -R mysql:mysql /run/mysqld/ &&\
+#     chmod 777 /run/mysqld/
 
 ENTRYPOINT ["/entrypoint.sh"]

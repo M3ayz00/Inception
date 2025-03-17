@@ -1,8 +1,12 @@
 #!/bin/bash
 
+mysql_install_db --datadir=/var/lib/mysql --user=mysql
+
+sleep 5
+
 service mariadb start       
 
-sleep 10
+sleep 5
 
 mysql -u root -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;"
 mysql -u root -e "CREATE USER IF NOT EXISTS \`${MYSQL_USER}\`@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
