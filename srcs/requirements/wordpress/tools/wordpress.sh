@@ -17,9 +17,9 @@ sed -i "s/define( 'DB_PASSWORD', 'password_here' );/define( 'DB_PASSWORD', '${MY
 sed -i "s/localhost/mariadb/" wp-config.php
 
 echo "Waiting for MariaDB to be ready..."
-until wp db check --allow-root &>/dev/null; do
+until mysql -h mariadb -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" -e "SHOW DATABASES;" &>/dev/null; do
   echo "MariaDB is not ready yet..."
-  sleep 2
+  sleep 5
 done
 
 

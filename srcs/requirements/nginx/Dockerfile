@@ -1,9 +1,10 @@
 FROM debian:bullseye
 
-RUN apt update -y && apt upgrade -y && apt install -y \
+RUN apt update -y && apt upgrade -y 
+RUN apt install -y \
     nginx \
-    openssl \
-    && apt clean && rm -rf /var/lib/apt/lists/*
+    openssl
+RUN apt clean && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /etc/nginx/ssl && \
     openssl req -x509 -nodes \

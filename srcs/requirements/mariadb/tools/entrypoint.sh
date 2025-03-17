@@ -1,8 +1,8 @@
 #!/bin/bash
 
-service mariadb start
+service mariadb start       
 
-sleep 5
+sleep 10
 
 mysql -u root -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;"
 mysql -u root -e "CREATE USER IF NOT EXISTS \`${MYSQL_USER}\`@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
