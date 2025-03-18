@@ -6,8 +6,8 @@ RUN apt install -y \
 RUN apt clean && rm -rf /var/lib/apt/lists/*
 
 COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
-COPY tools/entrypoint.sh /entrypoint.sh
+COPY tools/mariadb.sh /mariadb.sh
 
-RUN chmod +x /entrypoint.sh
+RUN chmod +x /mariadb.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/mariadb.sh"]
