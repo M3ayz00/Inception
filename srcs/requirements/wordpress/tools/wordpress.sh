@@ -18,10 +18,10 @@ mv wp-config-sample.php wp-config.php
 sed -i "s/define( 'DB_NAME', 'database_name_here' );/define( 'DB_NAME', '${MYSQL_DATABASE}' );/" wp-config.php
 sed -i "s/define( 'DB_USER', 'username_here' );/define( 'DB_USER', '${MYSQL_USER}' );/" wp-config.php
 sed -i "s/define( 'DB_PASSWORD', 'password_here' );/define( 'DB_PASSWORD', '${MYSQL_PASSWORD}' );/" wp-config.php
-sed -i "s/localhost/${MYSQL_HOST}/" wp-config.php
+sed -i "s/localhost/${MYSQL_DATABASE}/" wp-config.php
 
 echo "Waiting for MariaDB to be ready..."
-until mysql -h "${MYSQL_HOST}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" -e "SHOW DATABASES;" &>/dev/null; do
+until mysql -h "${MYSQL_DATABASE}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" -e "SHOW DATABASES;" &>/dev/null; do
   echo "MariaDB is not ready yet..."
   sleep 5
 done

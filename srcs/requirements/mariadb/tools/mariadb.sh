@@ -1,22 +1,37 @@
 #!/bin/bash
 
-mysql_install_db --datadir=/var/lib/mysql --user=mysql
-
+pkill -9 mysqld || true
 sleep 5
 
-service mariadb start       
+if [ ! -d "/var/lib/mysql/mysql" ]; then
+    mysql_install_db --user=mysql --datadir=/var/lib/mysql
+fi
 
-sleep 5
+mysqld --skip-networking --user=mysql &
+PID=$!
 
-service mariadb start
+until mysqladmin ping >/dev/null 2>&1; do
+    echo "Waiting for MariaDB to start..."
+    sleep 1
+done
 
-mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;"
-mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "CREATE USER IF NOT EXISTS \`${MYSQL_USER}\`@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
-mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO \`${MYSQL_USER}\`@'%';"
-mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}' WITH GRANT OPTION;"
+mysql <<EOF
+-- Create the database if it doesn't exist
+CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
 
-mysql -u root -e "FLUSH PRIVILEGES;"
+-- Create application user
+CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
+GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
 
-mysqladmin -u root -p"${MYSQL_ROOT_PASSWORD}" shutdown
+-- Create root user with remote access
+CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+EOF
 
-exec mysqld_safe --skip-syslog --datadir=/var/lib/mysql
+kill $PID
+wait $PID
+
+echo "MariaDB initialization completed successfully!"
+
+exec mysqld --user=mysql
