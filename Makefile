@@ -6,8 +6,6 @@ up:
 down:
 	@docker compose -f $(DOCKER_COMPOSE) down  -v 
 
-re: down up
-
 
 #for testing
 logs:
@@ -15,6 +13,8 @@ logs:
 
 buildup:	
 	@docker compose -f $(DOCKER_COMPOSE) up -d --build
+
+re: down buildup
 
 fclean:
 	@docker system prune -af --volumes

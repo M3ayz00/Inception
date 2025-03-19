@@ -48,6 +48,8 @@ services:
   redis:
     container_name: redis
     restart: always
+    volumes:
+      - /home/m3ayz00/data/redis:/data
     networks:
       - inception
     build: 
@@ -58,6 +60,22 @@ services:
       - wordpress
     expose:
       - "6379"
+
+  ftp:
+    container_name: ftp
+    restart: always
+    networks:
+      - inception
+    build: 
+      context: ./requirements/bonus/ftp
+    env_file:
+      - .env
+    depends_on:
+      - wordpress
+    expose:
+      - "21"
+    volumes:
+      - /home/m3ayz00/data/wordpress:/var/www/wordpress
 
 networks:
   inception:
