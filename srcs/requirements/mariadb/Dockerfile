@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM debian:buster
 
 RUN apt-get update && apt-get install -y \
     mariadb-server \
@@ -10,7 +10,8 @@ RUN sed -i "s/127.0.0.1/0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf && \
     chown -R mysql:mysql /var/run/mysqld /var/lib/mysql && \
     chmod 777 /var/run/mysqld
 
-COPY tools/mariadb.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/mariadb.sh
+COPY tools/mariadb.sh /tmp
 
-CMD ["mariadb.sh"]
+RUN chmod +x /tmp/mariadb.sh
+
+CMD ["/tmp/mariadb.sh"]
