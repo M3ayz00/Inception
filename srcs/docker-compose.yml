@@ -95,7 +95,22 @@ services:
     depends_on:
       - wordpress
     expose:
-      - "7777"
+      - "80"
+
+  portainer:
+    container_name: portainer
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer:/var/www/portainer
+    networks:
+      - inception
+    build: 
+      context: ./requirements/bonus/portainer
+    env_file:
+      - .env
+    ports:
+      - "9001:9001"
 
 networks:
   inception:
@@ -116,4 +131,11 @@ volumes:
     driver_opts:
       type: none
       device: /home/m3ayz00/data/wordpress
+      o: bind
+  portainer:
+    name: portainer
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/m3ayz00/data/portainer
       o: bind

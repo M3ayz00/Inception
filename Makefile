@@ -2,7 +2,7 @@ HOME=$(shell echo ~)
 DOCKER_COMPOSE=${HOME}/Desktop/Inception/srcs/docker-compose.yml
 
 up:
-	mkdir -p ${HOME}/data/wordpress ${HOME}/data/mariadb ${HOME}/data/adminer
+	mkdir -p ${HOME}/data/wordpress ${HOME}/data/mariadb ${HOME}/data/portainer
 	@docker compose -f $(DOCKER_COMPOSE) up -d
 
 down:
@@ -16,7 +16,7 @@ logs:
 	@docker compose -f $(DOCKER_COMPOSE) logs -f
 
 buildup:	
-	mkdir -p ${HOME}/data/wordpress ${HOME}/data/mariadb ${HOME}/data/adminer
+	mkdir -p ${HOME}/data/wordpress ${HOME}/data/mariadb ${HOME}/data/portainer
 	@docker compose -f $(DOCKER_COMPOSE) up -d --build
 
 re: down buildup
