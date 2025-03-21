@@ -1,7 +1,5 @@
 FROM debian:bullseye
 
-ARG DOMAIN_NAME
-
 RUN apt update -y && apt upgrade -y 
 RUN apt install -y \
     nginx \
@@ -13,7 +11,7 @@ RUN mkdir -p /etc/nginx/ssl && \
     -days 365 \
     -keyout /etc/nginx/ssl/inception.key \
     -out /etc/nginx/ssl/inception.crt \
-    -subj "/CN=${DOMAIN_NAME}"
+    -subj "/CN=msaadidi.42.fr"
 
 RUN mkdir -p /var/www/wordpress /var/run/nginx && \
     chmod 755 /var/www/wordpress && \

@@ -8,8 +8,6 @@ services:
       - inception
     build:
       context: ./requirements/nginx
-      args:
-        DOMAIN_NAME: ${DOMAIN_NAME}
     env_file:
       - .env
     ports:
@@ -35,7 +33,7 @@ services:
     container_name: wordpress
     restart: always
     volumes:
-      - wordpress:/var/www/wordpressa
+      - wordpress:/var/www/wordpress
     networks:
       - inception
     build: 
@@ -50,8 +48,6 @@ services:
   redis:
     container_name: redis
     restart: always
-    volumes:
-      - redis:/data
     networks:
       - inception
     build: 
@@ -78,6 +74,17 @@ services:
       - wordpress
     expose:
       - "21"
+    
+  adminer:
+    container_name: adminer
+    networks:
+      - inception
+    build: 
+      context: ./requirements/bonus/adminer
+    depends_on:
+      - wordpress
+    expose:
+      - "8080"
 
 networks:
   inception:
@@ -98,11 +105,4 @@ volumes:
     driver_opts:
       type: none
       device: /home/m3ayz00/data/wordpress
-      o: bind
-  redis:
-    name: redis
-    driver: local
-    driver_opts:
-      type: none
-      device: /home/m3ayz00/data/redis
       o: bind

@@ -20,7 +20,7 @@ wp config create \
   --dbhost=${WORDPRESS_DB_HOST}
 
 echo "Waiting for MariaDB to be ready..."
-until mysql -h "${MYSQL_DATABASE}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" -e "SHOW DATABASES;" &>/dev/null; do
+until mysql -h "${WORDPRESS_DB_HOST}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWORD}" -e "SHOW DATABASES;" &>/dev/null; do
   echo "MariaDB is not ready yet..."
   sleep 5
 done
@@ -45,7 +45,7 @@ wp plugin install redis-cache --activate --allow-root
 
 wp config set FS_METHOD direct --add --allow-root
 wp config set WP_REDIS_HOST "${WP_REDIS_HOST}" --add --allow-root
-wp config set WP_REDIS_PORT ""${WP_REDIS_PORT}"" --add --allow-root
+wp config set WP_REDIS_PORT "${WP_REDIS_PORT}" --add --allow-root
 wp config set WP_CACHE true --add --allow-root
 
 wp redis enable --allow-root
