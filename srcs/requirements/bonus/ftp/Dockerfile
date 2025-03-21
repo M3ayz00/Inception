@@ -5,7 +5,7 @@ RUN apt install -y \
     vsftpd
 RUN apt clean && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /var/www/wordpress 
+RUN mkdir -p /var/www/wordpress /var/run/vsftpd/empty
 RUN useradd -m -d /var/www/wordpress ftpuser -s /bin/bash && \
     echo 'ftpuser:password' | chpasswd
 
