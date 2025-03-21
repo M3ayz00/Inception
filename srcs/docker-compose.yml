@@ -86,6 +86,17 @@ services:
     expose:
       - "8080"
 
+  my-website:
+    container_name: my-website
+    networks:
+      - inception
+    build: 
+      context: ./requirements/bonus/my-website
+    depends_on:
+      - wordpress
+    expose:
+      - "7777"
+
 networks:
   inception:
     name: inception
