@@ -74,6 +74,7 @@ services:
       - wordpress
     expose:
       - "21"
+      - "50000-51000"
     
   adminer:
     container_name: adminer
@@ -109,8 +110,8 @@ services:
       context: ./requirements/bonus/portainer
     env_file:
       - .env
-    ports:
-      - "9001:9001"
+    expose:
+      - "9001"
 
 networks:
   inception:
