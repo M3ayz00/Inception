@@ -7,6 +7,4 @@ RUN curl -L https://github.com/portainer/portainer/releases/download/2.18.1/port
     && mv portainer /usr/local/bin/ \
     && rm portainer.tar.gz
 
-RUN chmod +x /usr/local/bin/portainer/portainer
-
-CMD ["/usr/local/bin/portainer/portainer", "--host", "tcp://0.0.0.0:9001"]
+CMD ["/usr/local/bin/portainer/portainer", "--bind", ":9001"]
