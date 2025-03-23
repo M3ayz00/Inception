@@ -1,6 +1,7 @@
 services:
   nginx:
     container_name: nginx
+    image: nginx
     restart: always
     volumes:
       - wordpress:/var/www/wordpress
@@ -17,6 +18,7 @@ services:
 
   mariadb:
     container_name: mariadb
+    image: mariadb
     restart: always
     volumes:
       - mariadb:/var/lib/mysql
@@ -31,6 +33,7 @@ services:
 
   wordpress:
     container_name: wordpress
+    image: wordpress
     restart: always
     volumes:
       - wordpress:/var/www/wordpress
@@ -47,6 +50,7 @@ services:
     
   redis:
     container_name: redis
+    image: redis
     restart: always
     networks:
       - inception
@@ -61,6 +65,7 @@ services:
 
   ftp:
     container_name: ftp
+    image: ftp
     restart: always
     volumes:
       - wordpress:/var/www/wordpress
@@ -78,28 +83,29 @@ services:
     
   adminer:
     container_name: adminer
+    image: adminer
     networks:
       - inception
     build: 
       context: ./requirements/bonus/adminer
     depends_on:
-      - wordpress
+      - mariadb
     expose:
       - "8080"
 
   my-website:
     container_name: my-website
+    image: my-website
     networks:
       - inception
     build: 
       context: ./requirements/bonus/my-website
-    depends_on:
-      - wordpress
     expose:
       - "80"
 
   portainer:
     container_name: portainer
+    image: portainer
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

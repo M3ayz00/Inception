@@ -6,17 +6,9 @@ RUN apt install -y \
     openssl
 RUN apt clean && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /etc/nginx/ssl && \
-    openssl req -x509 -nodes \
-    -days 365 \
-    -keyout /etc/nginx/ssl/inception.key \
-    -out /etc/nginx/ssl/inception.crt \
-    -subj "/CN=msaadidi.42.fr"
+COPY conf/nginx.conf.template /etc/nginx/nginx.conf.template
+COPY tools/nginx.sh /tmp/nginx.sh
 
-RUN mkdir -p /var/www/wordpress /var/run/nginx && \
-    chmod 755 /var/www/wordpress && \
-    chown -R www-data:www-data /var/www/wordpress
+RUN chmod +x /tmp/nginx.sh
 
-COPY conf/nginx.conf /etc/nginx/nginx.conf
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD [ "/tmp/nginx.sh" ]
