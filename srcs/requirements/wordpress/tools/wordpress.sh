@@ -43,7 +43,7 @@ wp user create \
 
 wp plugin install redis-cache --activate --allow-root
 
-wp config set FS_METHOD direct --add --allow-root
+# wp config set FS_METHOD direct --add --allow-root
 wp config set WP_REDIS_HOST "${WP_REDIS_HOST}" --add --allow-root
 wp config set WP_REDIS_PORT "${WP_REDIS_PORT}" --add --allow-root
 wp config set WP_CACHE true --add --allow-root

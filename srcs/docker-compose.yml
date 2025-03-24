@@ -1,14 +1,13 @@
 services:
   nginx:
     container_name: nginx
-    image: nginx
+    build:
+      context: ./requirements/nginx
     restart: always
     volumes:
       - wordpress:/var/www/wordpress
     networks:
       - inception
-    build:
-      context: ./requirements/nginx
     env_file:
       - .env
     ports:
@@ -18,14 +17,13 @@ services:
 
   mariadb:
     container_name: mariadb
-    image: mariadb
+    build:
+      context: ./requirements/mariadb
     restart: always
     volumes:
       - mariadb:/var/lib/mysql
     networks:
       - inception
-    build:
-      context: ./requirements/mariadb
     env_file:
       - .env
     expose:
@@ -33,14 +31,13 @@ services:
 
   wordpress:
     container_name: wordpress
-    image: wordpress
+    build: 
+      context: ./requirements/wordpress
     restart: always
     volumes:
       - wordpress:/var/www/wordpress
     networks:
       - inception
-    build: 
-      context: ./requirements/wordpress
     env_file:
       - .env
     depends_on:
@@ -50,12 +47,11 @@ services:
     
   redis:
     container_name: redis
-    image: redis
+    build: 
+      context: ./requirements/bonus/redis
     restart: always
     networks:
       - inception
-    build: 
-      context: ./requirements/bonus/redis
     env_file:
       - .env
     depends_on:
@@ -65,14 +61,13 @@ services:
 
   ftp:
     container_name: ftp
-    image: ftp
+    build: 
+      context: ./requirements/bonus/ftp
     restart: always
     volumes:
       - wordpress:/var/www/wordpress
     networks:
       - inception
-    build: 
-      context: ./requirements/bonus/ftp
     env_file:
       - .env
     depends_on:
@@ -83,37 +78,38 @@ services:
     
   adminer:
     container_name: adminer
-    image: adminer
-    networks:
-      - inception
     build: 
       context: ./requirements/bonus/adminer
+    networks:
+      - inception
     depends_on:
       - mariadb
+    env_file:
+      - .env
     expose:
       - "8080"
 
   my-website:
     container_name: my-website
-    image: my-website
-    networks:
-      - inception
     build: 
       context: ./requirements/bonus/my-website
+    networks:
+      - inception
     expose:
       - "80"
+    env_file:
+      - .env
 
   portainer:
     container_name: portainer
-    image: portainer
+    build: 
+      context: ./requirements/bonus/portainer
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer:/data
     networks:
       - inception
-    build: 
-      context: ./requirements/bonus/portainer
     env_file:
       - .env
     expose:
