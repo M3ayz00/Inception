@@ -1,7 +1,12 @@
-FROM debian:buster
+FROM debian:bullseye
 
-RUN apt update -y && apt upgrade -y && \
-    apt install -y curl php php-cli php-mysql
+RUN apt update -y && apt upgrade -y
+RUN apt install -y \
+    curl \
+    php \
+    php-cli \
+    php-mysql
+RUN apt clean && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /var/www/adminer
 
